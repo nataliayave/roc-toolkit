@@ -19,6 +19,7 @@
 #include "roc_core/mutex.h"
 #include "roc_core/noncopyable.h"
 #include "roc_core/stddefs.h"
+#include "roc_core/freelist.h" // Include the new freelist header
 
 namespace roc {
 namespace core {

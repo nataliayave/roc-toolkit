@@ -19,6 +19,7 @@
 #include "roc_core/noncopyable.h"
 #include "roc_core/slab_pool_impl.h"
 #include "roc_core/stddefs.h"
+#include "roc_core/freelist.h"
 
 namespace roc {
 namespace core {
@@ -113,12 +114,19 @@ public:
 
     //! Allocate memory for an object.
     virtual void* allocate() {
-        return impl_.allocate();
+        void* slot = freelist_.pop_back();
+        if (!slot) {
+            slot = impl_.allocate();
+            roc_log(LogDebug, "Allocated new slot: %p", slot);
+        }
+        return slot;
     }
 
     //! Return memory to pool.
     virtual void deallocate(void* memory) {
-        impl_.deallocate(memory);
+        freelist_.push_back(static_cast<T*>(memory));
+        roc_log(LogDebug, "Deallocated slot: %p", memory);
+        //impl_.deallocate(memory);
     }
 
     //! Get number of guard failures detected.
@@ -134,6 +142,7 @@ private:
     };
     AlignedStorage<EmbeddedCapacity * SlotSize> embedded_data_;
     SlabPoolImpl impl_;
+    Freelist<T> freelist;
 };
 
 } // namespace core
