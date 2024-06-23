@@ -1,6 +1,3 @@
-
-
-
 #ifndef ROC_CORE_FREELIST_H_
 #define ROC_CORE_FREELIST_H_
 
