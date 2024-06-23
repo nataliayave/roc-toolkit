@@ -12,7 +12,7 @@
 #include "roc_core/memory_ops.h"
 #include "roc_core/panic.h"
 #include "roc_core/slab_pool.h"
-#include "roc_core/freelist.h"  //update to add freelist
+
 
 namespace roc {
 namespace core {
